@@ -4,23 +4,25 @@ LCMXO3LF-6900C-6BG256I
 rst_n       B3      CREST
 clk_x1      C8      12MHz
 
-印刷字体朝自己
-
-接有上拉电阻 down-0,up-1
-DIPSW[1]    N2
-DIPSW[2]    P1
-DIPSW[3]    M3
-DIPSW[4]    N1
+"印刷字体朝自己"
 
 接有上拉电阻 低电平点亮
-LED[0]      H11
-LED[1]      J13
-LED[2]      J11
-LED[3]      L12
-LED[4]      K11
-LED[5]      L13
-LED[6]      N15
-LED[7]      P16
+D9      LED[7]      H11
+D8      LED[6]      J13
+D7      LED[5]      J11
+D6      LED[4]      L12
+D5      LED[3]      K11
+D4      LED[2]      L13
+D3      LED[1]      N15
+D2      LED[0]      P16
+
+接有上拉电阻 down-0,up-1
+DIPSW[3]    N1
+DIPSW[2]    M3
+DIPSW[1]    P1
+DIPSW[0]    N2
+
+
 
 
 
