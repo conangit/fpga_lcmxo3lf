@@ -1,0 +1,26 @@
+Device:
+LCMXO3LF-6900C-6BG256I
+
+rst_n       B3      CREST
+clk_x1      C8      12MHz
+
+印刷字体朝自己
+
+接有上拉电阻 down-0,up-1
+DIPSW[1]    N2
+DIPSW[2]    P1
+DIPSW[3]    M3
+DIPSW[4]    N1
+
+接有上拉电阻 低电平点亮
+LED[0]      H11
+LED[1]      J13
+LED[2]      J11
+LED[3]      L12
+LED[4]      K11
+LED[5]      L13
+LED[6]      N15
+LED[7]      P16
+
+
+
