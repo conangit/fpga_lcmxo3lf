@@ -2,7 +2,8 @@
 module i2c_slave #(parameter I2C_SLAVE_ADDR = 7'h30)
 (
     input clk,      //I2C driving clock
-    input rst_n,
+    input rstn_in,
+    
     inout scl,      //Serial clock
     inout sda       //Serial data
 );
@@ -23,7 +24,30 @@ module i2c_slave #(parameter I2C_SLAVE_ADDR = 7'h30)
     
     
 /*****************************************************************************************************/
-
+    
+    
+    //异步复位同步释放
+    reg reset_1;
+    reg reset_2;
+    wire rst_n;
+    
+    always @(posedge clk or negedge rstn_in) begin
+        if(!rstn_in) begin
+            reset_1 <= 1'b0;
+            reset_2 <= 1'b0;
+        end
+        else begin
+            reset_1 <= 1'b1;
+            reset_2 <= reset_1;
+        end
+    end
+    
+    assign rst_n = reset_2;
+    
+    
+/*****************************************************************************************************/
+    
+    
     //假设50MHz时钟下,经测SCL(SDA)的上升沿(下降沿)时间为180ns
     //延时10个clock=10*20ns=200ns
     parameter DEB_I2C_LEN = 4'd10;
