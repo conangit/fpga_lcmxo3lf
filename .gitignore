@@ -1,12 +1,12 @@
 
 01_MachXO3LF_Starter_Kit/bitstream
 01_MachXO3LF_Starter_Kit/project
-
 02_DIP_LED/project
-
 03_fifo_led/project
-
 04_i2c_device/project_1/project
 04_i2c_device/project_2/project
-
 05_Synplify_Pro/project
+06_pll_ip/project
+06_pll_ip/source/pll_ip
+
+
