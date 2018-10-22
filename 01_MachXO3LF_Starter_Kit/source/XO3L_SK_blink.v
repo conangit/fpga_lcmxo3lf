@@ -67,15 +67,16 @@
 //                         ENTITY DECLARATION                               --
 //                                                                          --
 //----------------------------------------------------------------------------
-module XO3L_SK_blink (
-        // inputs
-        input   wire        clk_x1,         // 12M clock from FTDI/X1 crystal
-        input   wire        rstn,           // from SW1 pushbutton
-        input   wire  [3:0] DIPSW,          // from SW2 DIP switches
-        
-        // outputs
-        output  wire  [7:0] LED             // to LEDs (D2-D9)
-        );
+module XO3L_SK_blink
+(
+    // inputs
+    input   wire        clk_x1,         // 12M clock from FTDI/X1 crystal
+    input   wire        rstn,           // from SW1 pushbutton
+    input   wire  [3:0] DIPSW,          // from SW2 DIP switches
+    
+    // outputs
+    output  wire  [7:0] LED             // to LEDs (D2-D9)
+);
 
 
 //----------------------------------------------------------------------------
@@ -103,6 +104,7 @@ reg     [7:0] LED_i;          // selector output
 //-------------------------------------//
 
 assign rst = ~rstn;
+//Pin-N1
 assign clk12M = DIPSW[3] ? osc_clk : clk_x1;    // select clock source int/ext pin-N1
 
 
@@ -114,47 +116,52 @@ assign clk12M = DIPSW[3] ? osc_clk : clk_x1;    // select clock source int/ext p
 //   select LED behavior
 //
 always @ (DIPSW[2:0], heartbeat, LED_array)
+begin
     begin
-            case (DIPSW[2:0])
-                3'b001 : begin      // insert kitcar
-                      LED_i <= LED_array;
-                    end
-                3'b011 : begin      // left-right
-                      LED_i <= heartbeat ? 8'b11110000 : 8'b00001111 ;
-                    end
-                3'b111 : begin      // heartbeat
-                      LED_i <= heartbeat ? 8'b11111111 : 8'b00000000 ;
-                    end
-                default : begin     // alternate
-                      LED_i <= heartbeat ? 8'b01010101 : 8'b10101010 ;
-                    end
-            endcase
+        case (DIPSW[2:0])
+            3'b001 : begin      // insert kitcar -- Pin-N2
+                  LED_i <= LED_array;
+                end
+            3'b010 : begin      // left-right -- P1
+                  LED_i <= heartbeat ? 8'b11110000 : 8'b00001111 ;
+                end
+            3'b100 : begin      // heartbeat -- M3
+                  LED_i <= heartbeat ? 8'b11111111 : 8'b00000000 ;
+                end
+            default : begin     // alternate
+                  LED_i <= heartbeat ? 8'b01010101 : 8'b10101010 ;
+                end
+        endcase
     end
+end
 
    //--------------------------------------------------------------------
    //--  module instances
    //--------------------------------------------------------------------
 
 defparam OSCH_inst.NOM_FREQ = "12.09";  
-OSCH OSCH_inst( 
+OSCH OSCH_inst
+( 
     .STDBY(1'b0), // 0=Enabled, 1=Disabled
     .OSC(osc_clk),
     .SEDSTDBY()
-    );
+);
 
-heartbeat #(.clk_freq (12000000))
-    heartbeat_inst (
-        .clk        (clk12M),
-        .rst        (rst),
-        .heartbeat  (heartbeat)
-        );
-        
-kitcar #(.clk_freq (12000000))
-    kitcar_inst (
-        .clk        (clk12M),
-        .rst        (rst),
-        .LED_array  (LED_array)
-        );
+
+heartbeat #(.clk_freq (12000000)) heartbeat_inst
+(
+    .clk        (clk12M),
+    .rst        (rst),
+    .heartbeat  (heartbeat)
+);
+
+
+kitcar #(.clk_freq (12000000)) kitcar_inst
+(
+    .clk        (clk12M),
+    .rst        (rst),
+    .LED_array  (LED_array)
+);
 
 
 

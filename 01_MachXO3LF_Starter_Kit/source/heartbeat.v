@@ -70,13 +70,14 @@
 //                         ENTITY DECLARATION                               --
 //                                                                          --
 //----------------------------------------------------------------------------
-module heartbeat (
-        // inputs
-        input   wire        clk,		
-        input   wire        rst,        // asynchronous reset
-        // outputs
-        output  reg         heartbeat
-        );
+module heartbeat
+(
+    // inputs
+    input   wire        clk,        
+    input   wire        rst,        // asynchronous reset
+    // outputs
+    output  reg         heartbeat
+);
 
 //----------------------------------------------------------------------------
 //                                                                          --
@@ -92,7 +93,7 @@ parameter clk_freq = 27'd25000000;  // in Hz
 // wires (assigns)
 
 // regs (always)
-reg		[26:0]	count;	        // enough bits for clk_freq =< 260Mhz
+reg     [26:0]  count;          // enough bits for clk_freq =< 260Mhz
 
 //-------------------------------------//
 //-- assign (non-process) operations --//
@@ -107,10 +108,10 @@ reg		[26:0]	count;	        // enough bits for clk_freq =< 260Mhz
 //   counter 
 //
 always @ (posedge clk or posedge rst)
-	if (rst) begin 
+    if (rst) begin 
         count <= 0;
         heartbeat <= 0;
-	end else begin
+    end else begin
         if (count >= (clk_freq/2)) begin
             count <= 0;
             heartbeat <= !heartbeat;

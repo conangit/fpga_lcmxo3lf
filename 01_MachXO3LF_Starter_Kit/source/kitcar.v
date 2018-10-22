@@ -41,8 +41,8 @@
 //------------------------------------------------------------
 // Description:
 //
-//  
-//	 
+//
+//
 //
 //
 //
@@ -70,14 +70,15 @@
 //                         ENTITY DECLARATION                               --
 //                                                                          --
 //----------------------------------------------------------------------------
-module kitcar (
-        // inputs
-        input	wire		clk,		// 
-        input	wire		rst,	    // asynchronous reset
-//        input	wire		enable,     
-        // outputs
-        output	reg  [7:0]	LED_array
-        );
+module kitcar
+(
+    // inputs
+    input   wire        clk,        // 
+    input   wire        rst,        // asynchronous reset
+    // input wire        enable,
+    // outputs
+    output  reg  [7:0]  LED_array
+);
 
 //----------------------------------------------------------------------------
 //                                                                          --
@@ -93,8 +94,8 @@ parameter clk_freq = 26'd25000000;  // in Hz
 // wires (assigns)
 
 // regs (always)
-reg	    [25:0]	clk_div;	    // enough bits for clk_freq =< 900Mhz
-reg		[3:0]	count;
+reg     [25:0]  clk_div;        // enough bits for clk_freq =< 900Mhz
+reg     [3:0]   count;
 reg             enable;
 
 //-------------------------------------//
@@ -110,14 +111,14 @@ reg             enable;
 //   (this process can be disabled if external enable is available)
 //
 always @ (posedge clk or posedge rst)
-	if (rst) begin 
+    if (rst) begin 
         clk_div <= 0;
         enable <= 0;
-	end else begin
+    end else begin
         if (clk_div >= (clk_freq/14)) begin
             clk_div <= 0;
             enable <= 1;
-        end else begin                      
+        end else begin
             clk_div <= clk_div + 1;
             enable <= 0;
         end
@@ -128,10 +129,10 @@ always @ (posedge clk or posedge rst)
 //  sequence counter 
 //
 always @ (posedge clk or posedge rst)
-	if (rst) begin 
+    if (rst) begin 
         count <= 0;
-	end else begin
-		if (enable) begin 
+    end else begin
+        if (enable) begin 
             if (count >= 13)    count <= 0;
             else                count <= count + 1;
         end
@@ -140,9 +141,9 @@ always @ (posedge clk or posedge rst)
 //  kitcar decode 
 //
 always @ (posedge clk or posedge rst)
-	if (rst) begin 
+    if (rst) begin 
         LED_array <= 0;
-	end else begin
+    end else begin
         case (count)
              0 : LED_array <= 8'b10000000;
              1 : LED_array <= 8'b01000000;
